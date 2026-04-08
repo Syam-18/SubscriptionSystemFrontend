@@ -19,12 +19,12 @@ export default function CreateSubscription({ onSuccess }: { onSuccess: () => voi
   const handleChange = (field: keyof FormType, value: string) => {
     setForm((prev) => ({
       ...prev,
-      [field]: value || "", // ✅ never undefined
+      [field]: value || "",
     }));
   };
 
   const handleSubmit = async () => {
-    // ✅ Validation
+
     if (!form.user_id || !form.start_date || !form.end_date) {
       setMessage("All fields are required");
       return;

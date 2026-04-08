@@ -64,7 +64,6 @@ export default function SubscriptionList({
     <div className="text-white flex flex-col gap-2 justify-center md:h-full p-4 max-w-100">
       <h2 className="text-xl font-semibold">Subscriptions</h2>
 
-      {/* 🔽 Filter Dropdown */}
       <div className="mb-2">
         <select
           value={filter}
