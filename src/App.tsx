@@ -1,68 +1,22 @@
 import { useState } from "react";
-import axios from "axios";
+import CreateSubscription from "./SubscriptionForm";
+import SubscriptionList from "./SubscriptionList";
 
-function App() {
-  const [data, setData] = useState({
-    user_id: "",
-    start_date: "",
-    end_date: "",
-  });
-
-  const [subscriptions, setSubscriptions] = useState([]);
-
-  const handleSubscribe = async () => {
-    try {
-      await axios.post("http://localhost:5000/subscribe", data);
-      alert("Subscribed!");
-    } catch (err) {
-      alert(err.response.data.message);
-    }
-  };
-
-  const fetchSubscriptions = async () => {
-    const res = await axios.get(
-      `http://localhost:5000/subscriptions/${data.user_id}`,
-    );
-    setSubscriptions(res.data);
-  };
-
+const App = () => {
+  const [refresh, setRefresh] = useState<number>(0);
   return (
-    <div className="p-5">
-      <h2>Subscription System</h2>
+    <div className="flex flex-col items-center md:flex-row gap-5 bg-black min-h-screen">
+      {/* LEFT SIDE */}
+      <div className="grow">
+        <CreateSubscription onSuccess={() => setRefresh((prev) => prev + 1)} />
+      </div>
 
-      <input
-        placeholder="User ID"
-        onChange={(e) => setData({ ...data, user_id: e.target.value })}
-      />
-
-      <br />
-
-      <input
-        type="date"
-        onChange={(e) => setData({ ...data, start_date: e.target.value })}
-      />
-
-      <br />
-
-      <input
-        type="date"
-        onChange={(e) => setData({ ...data, end_date: e.target.value })}
-      />
-
-      <br />
-
-      <button onClick={handleSubscribe}>Subscribe</button>
-      <button onClick={fetchSubscriptions}>View Active</button>
-
-      <ul>
-        {subscriptions.map((sub: {id: string, start_date: string, end_date: string}) => (
-          <li key={sub.id}>
-            {sub.start_date} → {sub.end_date}
-          </li>
-        ))}
-      </ul>
+      {/* RIGHT SIDE */}
+      <div style={{ flex: 2 }}>
+        <SubscriptionList refreshTrigger={refresh} />
+      </div>
     </div>
   );
-}
+};
 
 export default App;
